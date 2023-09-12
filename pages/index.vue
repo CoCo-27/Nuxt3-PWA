@@ -96,7 +96,7 @@
               #12832
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -134,7 +134,7 @@
               #12835
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -172,7 +172,7 @@
               #12835
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -210,7 +210,7 @@
               #12835
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -250,7 +250,7 @@
               #12833
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -288,7 +288,7 @@
               #12834
             </div>
             <div class="justify-start items-center gap-1 flex">
-              <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+              <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
               <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
             </div>
           </div>
@@ -354,7 +354,7 @@
             #12832
           </div>
           <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+            <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
             <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
           </div>
         </div>
@@ -363,7 +363,7 @@
       <div
         class="absolute top-[600px] left-[16px] flex items-end space-x-4 w-full h-auto"
       >
-        <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+        <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
         <div
           class="bg-white rounded-lg shadow flex flex-col space-y-1 py-2 px-4"
         >
@@ -462,11 +462,11 @@
       </div>
       <div class="self-stretch justify-between items-center gap-4 inline-flex">
         <div class="justify-start items-center gap-1 flex">
-          <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+          <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
           <div class="text-black text-xs font-normal">Labor Wunderheilung</div>
         </div>
         <div class="justify-start items-center gap-1 flex">
-          <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+          <img class="w-3.5 h-3.5 rounded-[14px]" src="doctor.png" />
           <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
         </div>
       </div>
