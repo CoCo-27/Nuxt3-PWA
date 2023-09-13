@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full desktop:w-1/4 h-[852px] flex flex-col gap-4 p-4 relative bg-neutral-50"
+    class="w-full desktop:w-1/3 h-[852px] flex flex-col gap-4 p-4 relative bg-neutral-50"
   >
     <div class="w-6 h-6 left-[16px] top-[16px]">
       <svg
@@ -60,249 +60,66 @@
         </div>
       </div>
     </div>
+
     <div class="flex flex-col gap-4 overflow-y-auto">
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-lime-700 bg-opacity-10 rounded-2xl border border-lime-700 justify-center items-center flex"
-            >
-              <div class="text-lime-700 text-[8px] font-normal">Fertig</div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">Zufall, Rainer</div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12832
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-zinc-800 bg-opacity-10 rounded-2xl border border-zinc-800 justify-center items-center flex"
-            >
-              <div class="text-zinc-800 text-[8px] font-normal">Fertig</div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">
-              Markert-Klinkel, Annabell
-            </div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12835
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-zinc-800 bg-opacity-10 rounded-2xl border border-zinc-800 justify-center items-center flex"
-            >
-              <div class="text-zinc-800 text-[8px] font-normal">Fertig</div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">
-              Markert-Klinkel, Annabell
-            </div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12835
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-zinc-800 bg-opacity-10 rounded-2xl border border-zinc-800 justify-center items-center flex"
-            >
-              <div class="text-zinc-800 text-[8px] font-normal">Fertig</div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">
-              Markert-Klinkel, Annabell
-            </div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12835
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-yellow-500 bg-opacity-10 rounded-2xl border border-yellow-500 justify-center items-center flex"
-            >
-              <div class="text-yellow-500 text-[8px] font-normal">Versandt</div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">Mustermann, Max</div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12833
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
-      >
-        <div
-          class="self-stretch justify-between items-center gap-2 inline-flex"
-        >
-          <div class="justify-start items-center gap-2 flex">
-            <div
-              class="px-2 py-1 bg-blue-700 bg-opacity-10 rounded-2xl border border-blue-700 justify-center items-center flex"
-            >
-              <div class="text-blue-700 text-[8px] font-normal">
-                In Fertigung
-              </div>
-            </div>
-            <div class="text-zinc-800 text-base font-bold">Barber, Ra</div>
-          </div>
-          <div
-            class="px-2 py-1 bg-red-600 bg-opacity-10 rounded-2xl border border-red-600 justify-center items-center flex"
-          >
-            <div class="text-red-600 text-[8px] font-normal">1</div>
-          </div>
-        </div>
-        <div class="self-stretch text-black text-sm font-normal">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut.
-        </div>
-        <div
-          class="self-stretch justify-between items-center gap-4 inline-flex"
-        >
-          <div class="text-black text-opacity-50 text-xs font-normal">
-            #12834
-          </div>
-          <div class="justify-start items-center gap-1 flex">
-            <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-            <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
-          </div>
-        </div>
-      </div>
+      <ItemComponent
+        v-for="item in result?.data || []"
+        :key="item.id"
+        :doctor="doctor"
+        :firstName="item.patient?.first_name"
+        :lastName="item.patient?.last_name"
+        :number="item.patient?.patient_number"
+        :status="item.status"
+        :workDescription="item.work_description"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import doctorImage from 'assets/doctor.png';
+import ItemComponent from './ItemComponent.vue';
 
 export default {
   name: 'ListComponent',
+  components: {
+    ItemComponent,
+  },
 
   data() {
     return {
       doctor: doctorImage,
+      result: null,
+      loading: false,
     };
   },
+
+  created: async function () {
+    this.loading = true;
+    const runtimeConfig = useRuntimeConfig();
+    const response = await fetch(
+      'https://app.wunschlachen.de/staging/items/Laboratory_work?fields=*%2Cpatient.first_name%2Cpatient.last_name%2Cpatient.patient_number&=',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: runtimeConfig.public.BEARER_TOKEN,
+        },
+      }
+    );
+
+    if (response.ok) {
+      this.loading = false;
+      this.result = await response.json();
+      console.log('result = ', this.result.data);
+    } else {
+      this.loading = false;
+      console.error('Response Error:', response);
+    }
+  },
+
   methods: {
-    async gotoCreate() {
-      this.$router.push('/create');
+    gotoCreate() {
+      this.$emit('changeComponent', 'CreateComponent');
     },
   },
 };

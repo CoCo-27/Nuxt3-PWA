@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full desktop:w-1/4 h-[852px] flex flex-col gap-4 p-4 relative bg-neutral-50"
+    class="w-full desktop:w-1/3 h-[852px] flex flex-col gap-4 p-4 relative bg-neutral-50"
   >
     <div class="self-stretch justify-between items-center gap-2 inline-flex">
       <div class="justify-start items-center gap-2 flex">
