@@ -1,0 +1,115 @@
+<template>
+  <div
+    class="w-full desktop:w-1/4 h-[852px] flex flex-col justify-between gap-4 pb-6 relative bg-neutral-50"
+  >
+    <div
+      class="h-fit p-4 bg-white rounded-bl-lg rounded-br-lg shadow flex-col justify-start items-start gap-2 inline-flex"
+    >
+      <div class="self-stretch justify-between items-center gap-2 inline-flex">
+        <div
+          class="pl-2 pr-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex"
+        >
+          <div class="w-6 h-6 relative">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M6.64999 12.35L12.5 18.2L12 18.7L5.29999 12L12 5.29999L12.5 5.79999L6.64999 11.65H18.7V12.35H6.64999Z"
+                fill="black"
+              />
+            </svg>
+          </div>
+          <div class="text-black text-base font-normal">Übersicht</div>
+        </div>
+        <div
+          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex"
+        >
+          <div class="text-black text-base font-normal">Details</div>
+        </div>
+      </div>
+      <div class="self-stretch justify-between items-center gap-2 inline-flex">
+        <div class="justify-start items-center gap-2 flex">
+          <div
+            class="px-2 py-1 bg-lime-700 bg-opacity-10 rounded-2xl border border-lime-700 justify-center items-center flex"
+          >
+            <div class="text-lime-700 text-[8px] font-normal">Fertig</div>
+          </div>
+          <div class="text-zinc-800 text-base font-bold">Zufall, Rainer</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="self-stretch text-black text-xs font-normal">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        eirmod tempor invidunt ut.
+      </div>
+      <div class="self-stretch justify-between items-center gap-4 inline-flex">
+        <div class="text-black text-opacity-50 text-xs font-normal">#12832</div>
+        <div class="justify-start items-center gap-1 flex">
+          <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+          <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="absolute top-[600px] left-[16px] flex items-end space-x-4 w-full h-auto"
+    >
+      <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+      <div class="bg-white rounded-lg shadow flex flex-col space-y-1 py-2 px-4">
+        <div class="flex justify-between items-center text-xs">
+          <div class="font-bold text-black">Dr. Peter Silie</div>
+          <div class="text-black text-opacity-50">vor 3 min</div>
+        </div>
+        <div class="text-sm text-black">
+          Guten Tag Herr Paetz wie kann ich Ihnen <br />heute helfen?
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="absolute left-[82px] right-[16px] top-[692px] w-auto h-auto px-4 py-2 bg-lime-600 bg-opacity-10 rounded-tl-lg rounded-tr-lg rounded-bl-lg shadow flex flex-col justify-start items-start gap-1"
+    >
+      <div class="self-stretch justify-between items-center gap-1 inline-flex">
+        <div class="text-black text-xs font-bold">Ich</div>
+        <div class="text-black text-opacity-50 text-xs font-normal">
+          vor 3 min
+        </div>
+      </div>
+      <div class="text-black text-sm font-normal">
+        Heute benötige ich einiges von Ihnen <br />es wird ein großer Auftrag.
+      </div>
+    </div>
+
+    <div class="w-full px-4 justify-center items-center inline-flex">
+      <div class="bg-white rounded-[100px] w-full px-4 py-2 gap-2 inline-flex">
+        <div class="w-6 h-6 relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M11.65 12.35H6.29999V11.65H11.65V6.29999H12.35V11.65H17.7V12.35H12.35V17.7H11.65V12.35Z"
+              fill="black"
+            />
+          </svg>
+        </div>
+        <div class="grow shrink basis-0 text-black text-sm font-normal">
+          schreiben...
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MessageComponent',
+};
+</script>

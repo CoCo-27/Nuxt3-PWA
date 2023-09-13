@@ -1,11 +1,10 @@
-const siteTitle = 'Nuxt 3 PWA Template'
+const siteTitle = 'Laboratory PWA';
 
 /*
  * Nuxt 3 Config File
  Usage: https://nuxt.com/docs/api/configuration/nuxt-config
  */
 export default defineNuxtConfig({
-
   /**
    * * App Config
    * app config: https://nuxt.com/docs/api/configuration/nuxt-config#app
@@ -19,7 +18,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: siteTitle, // App window nav title
-      
+
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -31,7 +30,7 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: 'pwa/icons/apple-touch-icon.png' },
       ],
     },
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: { name: 'page', mode: 'out-in' },
   },
 
   /**
@@ -47,12 +46,9 @@ export default defineNuxtConfig({
   ],
 
   components: {
-    dirs: [
-      '~/components',
-      '~/components/library'
-    ],
+    dirs: ['~/components', '~/components/library'],
   },
-  
+
   /**
    * * Tailwind CSS Config
    * Options: https://tailwindcss.nuxt.dev/getting-started/options/
@@ -88,7 +84,8 @@ export default defineNuxtConfig({
         iso: 'en-US',
         name: 'English',
       },
-  ]},
+    ],
+  },
 
   /**
    * * Color mode Config
@@ -107,7 +104,8 @@ export default defineNuxtConfig({
     apiSecret: '123',
     // Keys within public are also exposed client-side
     public: {
-      apiBase: '/api'
-    }
-  }
-})
+      apiBase: '/api',
+      BEARER_TOKEN: process.env.NUXT_BEARER_TOKEN,
+    },
+  },
+});
