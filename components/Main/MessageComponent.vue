@@ -49,7 +49,7 @@
       <div class="self-stretch justify-between items-center gap-4 inline-flex">
         <div class="text-black text-opacity-50 text-xs font-normal">#12832</div>
         <div class="justify-start items-center gap-1 flex">
-          <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+          <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
           <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
         </div>
       </div>
@@ -58,7 +58,7 @@
     <div
       class="absolute top-[600px] left-[16px] flex items-end space-x-4 w-full h-auto"
     >
-      <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+      <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
       <div class="bg-white rounded-lg shadow flex flex-col space-y-1 py-2 px-4">
         <div class="flex justify-between items-center text-xs">
           <div class="font-bold text-black">Dr. Peter Silie</div>
@@ -109,7 +109,15 @@
 </template>
 
 <script>
+import doctorImage from 'assets/doctor.png';
+
 export default {
   name: 'MessageComponent',
+
+  data() {
+    return {
+      doctor: doctorImage,
+    };
+  },
 };
 </script>

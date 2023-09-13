@@ -41,11 +41,11 @@
     </div>
     <div class="self-stretch justify-between items-center gap-4 inline-flex">
       <div class="justify-start items-center gap-1 flex">
-        <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+        <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
         <div class="text-black text-xs font-normal">Labor Wunderheilung</div>
       </div>
       <div class="justify-start items-center gap-1 flex">
-        <img class="w-3.5 h-3.5 rounded-[14px]" src="images/doctor.png" />
+        <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
         <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
       </div>
     </div>
@@ -184,7 +184,15 @@
 </template>
 
 <script>
+import doctorImage from 'assets/doctor.png';
+
 export default {
   name: 'RainerComponent',
+
+  data() {
+    return {
+      doctor: doctorImage,
+    };
+  },
 };
 </script>
