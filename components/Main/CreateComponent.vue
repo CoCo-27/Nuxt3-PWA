@@ -46,12 +46,20 @@
           <div class="text-black text-opacity-75 py-3 text-xs font-bold">
             Patient:
           </div>
-          <input
-            class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal border-1 border-blue-200"
+          <select
+            class="grow shrink basis-0 bg-[#ededed] border-0 h-full px-2 text-sm font-normal"
             v-model="patient"
-            type="text"
-            placeholder="Hier eintreten..."
-          />
+          >
+            <option value="" disabled selected>Wähle eins...</option>
+            <option
+              v-for="(item, index) in patientData?.data || []"
+              :key="index"
+              :value="item.id"
+            >
+              <!-- Assuming 'name' is a property of a patient object -->
+              {{ item.last_name }}, {{ item.first_name }}
+            </option>
+          </select>
         </div>
         <div
           class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
@@ -59,12 +67,14 @@
           <div class="text-black text-opacity-75 py-3 text-xs font-bold">
             Zahnartzt:
           </div>
-          <input
-            class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
+          <select
+            class="grow shrink basis-0 bg-[#ededed] border-0 h-full px-2 text-sm font-normal"
             v-model="dentist"
-            type="text"
-            placeholder="Hier eintreten..."
-          />
+          >
+            <option value="" disabled selected>Wähle eins...</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+          </select>
         </div>
         <div
           class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
@@ -123,7 +133,16 @@
         </div>
         <div
           class="self-stretch h-[104px] px-4 py-2 bg-black bg-opacity-5 rounded-lg flex-col justify-start items-start gap-2 flex"
+          @dragenter.prevent
+          @dragover.prevent
+          @drop="handleFileDrop"
         >
+          <input
+            type="file"
+            ref="fileInput"
+            style="display: none"
+            @change="handleFileUpload"
+          />
           <div
             class="self-stretch justify-start items-center gap-2 inline-flex"
           >
@@ -132,7 +151,10 @@
             >
               Eingereichte Unterlagen:
             </div>
-            <div class="w-6 h-6 relative bg-white rounded-2xl">
+            <div
+              class="w-6 h-6 relative bg-white rounded-2xl cursor-pointer"
+              @click="openFile"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -165,7 +187,12 @@
                 />
               </svg>
             </div>
-            <div class="text-black text-sm font-bold">Hier hochladen</div>
+            <div v-if="uploadedFile" class="text-blue-700 font-bold text-lg">
+              {{ uploadedFile.name }} uploaded
+            </div>
+            <div v-else class="text-black text-sm font-bold">
+              Hier hochladen
+            </div>
           </div>
         </div>
       </div>
@@ -179,9 +206,63 @@ import { ref } from 'vue';
 export default {
   name: 'CreateComponent',
 
+  data() {
+    return {
+      patientData: null,
+      uploadedFile: null,
+      loading: false,
+    };
+  },
+
+  created: async function () {
+    this.loading = true;
+    const runtimeConfig = useRuntimeConfig();
+    const patientResponse = await fetch(
+      'https://app.wunschlachen.de/staging/items/patients',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: runtimeConfig.public.BEARER_TOKEN,
+        },
+      }
+    );
+
+    if (patientResponse.ok) {
+      this.loading = false;
+      this.patientData = await patientResponse.json();
+      console.log('result = ', this.patientData.data);
+    } else {
+      this.loading = false;
+      console.error('Response Error:', patientResponse);
+    }
+  },
+
   methods: {
     gotoPre() {
       this.$emit('changeComponent', 'ListComponent');
+    },
+
+    openFile() {
+      this.$refs.fileInput.click();
+    },
+
+    handleFileUpload(e) {
+      // When a file is selected...
+      const files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createFile(files[0]);
+    },
+
+    handleFileDrop(e) {
+      // When a file is dropped...
+      this.handleFileUpload(e);
+    },
+
+    createFile(file) {
+      // This is where you can handle the uploaded file.
+      // For example, upload to a server using an AJAX method.
+      console.log(file);
+      this.uploadedFile = file;
     },
   },
 

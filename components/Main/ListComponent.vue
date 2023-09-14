@@ -71,6 +71,8 @@
         :number="item.patient?.patient_number"
         :status="item.status"
         :workDescription="item.work_description"
+        :item="item"
+        @item-clicked="handleItemClick"
       />
     </div>
   </div>
@@ -120,6 +122,11 @@ export default {
   methods: {
     gotoCreate() {
       this.$emit('changeComponent', 'CreateComponent');
+    },
+
+    handleItemClick(item) {
+      // emit event to parent component (App.vue)
+      this.$emit('change-selected-item', item);
     },
   },
 };

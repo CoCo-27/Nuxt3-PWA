@@ -3,11 +3,13 @@
     class="w-full desktop:w-1/3 h-[852px] flex flex-col justify-between gap-4 pb-6 relative bg-neutral-50"
   >
     <div
+      v-if="isMobileView"
       class="h-fit p-4 bg-white rounded-bl-lg rounded-br-lg shadow flex-col justify-start items-start gap-2 inline-flex"
     >
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div
-          class="pl-2 pr-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex"
+          class="pl-2 pr-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
+          @click="gotoPre"
         >
           <div class="w-6 h-6 relative">
             <svg
@@ -26,7 +28,8 @@
           <div class="text-black text-base font-normal">Übersicht</div>
         </div>
         <div
-          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex"
+          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
+          @click="goToDetail"
         >
           <div class="text-black text-base font-normal">Details</div>
         </div>
@@ -34,20 +37,30 @@
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div class="justify-start items-center gap-2 flex">
           <div
-            class="px-2 py-1 bg-lime-700 bg-opacity-10 rounded-2xl border border-lime-700 justify-center items-center flex"
+            class="px-2 py-1 bg-opacity-10 rounded-2xl border justify-center items-center flex"
+            :class="{
+              'bg-lime-700 border-lime-700 text-lime-700':
+                selectedItem.status === 'open',
+              'bg-blue-700 border-blue-700 text-blue-700':
+                selectedItem.status === 'dispatched',
+            }"
           >
-            <div class="text-lime-700 text-[8px] font-normal">Fertig</div>
+            <div class="text-[10px] font-normal">{{ selectedItem.status }}</div>
           </div>
-          <div class="text-zinc-800 text-base font-bold">Zufall, Rainer</div>
+          <div class="text-zinc-800 text-base font-bold">
+            {{ selectedItem.patient?.last_name }},
+            {{ selectedItem.patient?.first_name }}
+          </div>
         </div>
         <div></div>
       </div>
       <div class="self-stretch text-black text-xs font-normal">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-        eirmod tempor invidunt ut.
+        {{ selectedItem.work_description }}
       </div>
       <div class="self-stretch justify-between items-center gap-4 inline-flex">
-        <div class="text-black text-opacity-50 text-xs font-normal">#12832</div>
+        <div class="text-black text-opacity-50 text-xs font-normal">
+          #{{ selectedItem.patient?.patient_number }}
+        </div>
         <div class="justify-start items-center gap-1 flex">
           <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
           <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
@@ -55,6 +68,7 @@
       </div>
     </div>
 
+    <div v-else></div>
     <div
       class="absolute top-[600px] left-[16px] flex items-end space-x-4 w-full h-auto"
     >
@@ -118,6 +132,35 @@ export default {
     return {
       doctor: doctorImage,
     };
+  },
+
+  props: {
+    isMobileView: Boolean,
+    selectedItem: Object, // Added new prop to receive the selected item
+  },
+
+  mounted() {
+    console.log('MessageComponent = ', this.selectedItem);
+    console.log('isMobileView = ', this.isMobileView);
+  },
+
+  watch: {
+    selectedItem: {
+      handler: function (val) {
+        console.log('selectedItem changed to:', val);
+      },
+      deep: true,
+    },
+  },
+
+  methods: {
+    gotoPre() {
+      this.$emit('changeComponent', 'ListComponent');
+    },
+
+    goToDetail() {
+      this.$emit('changeComponent', 'RainerComponent');
+    },
   },
 };
 </script>

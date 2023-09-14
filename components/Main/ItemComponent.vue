@@ -1,6 +1,7 @@
 <template>
   <div
-    class="h-auto p-4 bg-white rounded-lg shadow flex-col justify-start items-start gap-2 inline-flex"
+    class="h-[140px] p-4 bg-white rounded-lg shadow flex-col justify-between items-start inline-flex cursor-pointer hover:bg-black hover:bg-opacity-5"
+    @click="handleClick"
   >
     <div class="self-stretch justify-between items-center gap-2 inline-flex">
       <div class="justify-start items-center gap-2 flex">
@@ -44,12 +45,20 @@ export default {
   name: 'ItemComponent',
 
   props: {
+    item: { type: Object },
     doctor: { type: String },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    number: { type: String, required: true },
+    number: { type: String },
     status: { type: String, required: true },
     workDescription: { type: String },
+  },
+
+  methods: {
+    handleClick() {
+      // Emit a custom event with item data
+      this.$emit('item-clicked', this.item);
+    },
   },
 };
 </script>
