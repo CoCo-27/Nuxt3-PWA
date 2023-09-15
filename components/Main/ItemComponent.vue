@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-[112px] p-4 bg-white rounded-lg shadow flex-col justify-between items-start inline-flex cursor-pointer hover:bg-black hover:bg-opacity-5"
+    class="min-h-[112px] p-4 bg-white rounded-lg shadow flex-col justify-between items-start inline-flex cursor-pointer hover:bg-[#ededed]"
     @click="handleClick"
   >
     <div class="self-stretch justify-between items-center gap-2 inline-flex">
@@ -51,10 +51,10 @@ export default {
   props: {
     item: { type: Object },
     doctor: { type: String },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: { type: String },
+    lastName: { type: String },
     number: { type: String },
-    status: { type: String, required: true },
+    status: { type: String },
     workDescription: { type: String },
   },
 

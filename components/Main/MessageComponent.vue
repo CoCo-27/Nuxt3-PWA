@@ -8,7 +8,7 @@
     >
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div
-          class="pl-2 pr-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
+          class="pl-2 pr-4 py-2 bg-[#fafafa] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
           @click="gotoPre"
         >
           <div class="w-6 h-6 relative">
@@ -28,7 +28,7 @@
           <div class="text-black text-base font-normal">Übersicht</div>
         </div>
         <div
-          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
+          class="px-4 py-2 bg-[#fafafa] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
           @click="goToDetail"
         >
           <div class="text-black text-base font-normal">Details</div>
@@ -159,7 +159,7 @@ export default {
     },
 
     goToDetail() {
-      this.$emit('changeComponent', 'RainerComponent');
+      this.$emit('changeComponent', 'RainerComponent', this.selectedItem);
     },
   },
 };

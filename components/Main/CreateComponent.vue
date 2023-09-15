@@ -1,12 +1,9 @@
 <template>
   <div class="w-full h-[852px] p-4 relative bg-neutral-50">
-    <form
-      class="w-full h-full flex flex-col gap-4 relative"
-      @submit.prevent="submitForm"
-    >
+    <form class="w-full h-full flex flex-col gap-4 relative">
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div
-          class="pl-2 pr-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
+          class="pl-2 pr-4 py-2 bg-[#ededed] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
           @click="gotoPre"
         >
           <div class="w-6 h-6 relative">
@@ -26,8 +23,7 @@
           <div class="text-black text-base font-normal">Abbrechen</div>
         </div>
         <button
-          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer text-black text-base font-normal hover:bg-white"
-          @click.prevent="submitForm"
+          class="px-4 py-2 bg-[#ededed] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer text-black text-base font-normal hover:bg-white"
           type="submit"
         >
           Speichern
@@ -42,83 +38,71 @@
         class="self-stretch h-fit flex-col justify-start items-start gap-4 flex"
       >
         <div
-          class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
+          class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="text-black text-opacity-75 py-3 text-xs font-bold">
+          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
             Patient:
           </div>
-          <select
-            class="grow shrink basis-0 bg-[#ededed] border-0 h-full px-2 text-sm font-normal"
-            v-model="patient"
-          >
-            <option value="" disabled selected>Wähle eins...</option>
-            <option
-              v-for="(item, index) in patientData?.data || []"
-              :key="index"
-              :value="item.id"
-            >
-              <!-- Assuming 'name' is a property of a patient object -->
-              {{ item.last_name }}, {{ item.first_name }}
-            </option>
-          </select>
+          <v-autocomplete
+            class="w-5/6"
+            :items="this.patientNames"
+            variant="outlined"
+            hide-details
+          ></v-autocomplete>
         </div>
         <div
-          class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
+          class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="text-black text-opacity-75 py-3 text-xs font-bold">
+          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
             Zahnartzt:
           </div>
-          <select
-            class="grow shrink basis-0 bg-[#ededed] border-0 h-full px-2 text-sm font-normal"
-            v-model="dentist"
-          >
-            <option value="" disabled selected>Wähle eins...</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-          </select>
+          <v-autocomplete
+            class="w-5/6"
+            :items="this.dentistNames"
+            variant="outlined"
+            hide-details
+          ></v-autocomplete>
         </div>
         <div
-          class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
+          class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="text-black text-opacity-75 py-3 text-xs font-bold">
+          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
             Dienstleister:
           </div>
-          <input
-            class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
-            v-model="service_provider"
-            type="text"
-            placeholder="Hier eintreten..."
-          />
+          <v-autocomplete
+            class="w-5/6"
+            :items="this.locationNames"
+            variant="outlined"
+            hide-details
+          ></v-autocomplete>
         </div>
         <div
-          class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
+          class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="text-black text-opacity-75 py-3 text-xs font-bold">
+          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
             Standort:
           </div>
-          <input
-            class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
-            v-model="location"
-            type="text"
-            placeholder="Hier eintreten..."
-          />
+          <v-autocomplete
+            class="w-5/6"
+            :items="this.serviceNames"
+            variant="outlined"
+            hide-details
+          ></v-autocomplete>
         </div>
         <div
-          class="self-stretch px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-center items-center gap-2 inline-flex"
+          class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div
-            class="w-[57px] py-3 text-black text-opacity-75 text-xs font-bold"
-          >
+          <div class="w-1/6 py-3 text-black text-opacity-75 text-xs font-bold">
             Rd zu Bp:
           </div>
           <input
-            class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
+            class="w-5/6 grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
             v-model="rd_to_bp"
             type="date"
           />
         </div>
         <div
-          class="self-stretch h-fit px-4 py-3 bg-black bg-opacity-5 rounded-lg flex-col justify-center items-center gap-2 flex"
+          class="self-stretch h-fit px-4 py-3 bg-[#ededed] rounded-lg flex-col justify-center items-center gap-2 flex"
         >
           <div
             class="self-stretch text-black text-opacity-75 text-xs font-bold"
@@ -133,7 +117,7 @@
           ></textarea>
         </div>
         <div
-          class="self-stretch h-[104px] px-4 py-2 bg-black bg-opacity-5 rounded-lg flex-col justify-start items-start gap-2 flex"
+          class="self-stretch h-[104px] px-4 py-2 bg-[#ededed] rounded-lg flex-col justify-start items-start gap-2 flex"
           @dragenter.prevent
           @dragover.prevent
           @drop="handleFileDrop"
@@ -208,8 +192,14 @@ export default {
   data() {
     return {
       patientData: null,
+      dentistData: null,
+      locationData: null,
+      serviceData: null,
+      dentistNames: [],
+      patientNames: [],
+      locationNames: [],
+      serviceNames: [],
       loading: false,
-
       patient: null,
       dentist: null,
       service_provider: null,
@@ -220,26 +210,86 @@ export default {
     };
   },
 
-  created: async function () {
+  async created() {
     this.loading = true;
     const runtimeConfig = useRuntimeConfig();
-    const patientResponse = await fetch(
-      'https://app.wunschlachen.de/staging/items/patients',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: runtimeConfig.public.BEARER_TOKEN,
-        },
-      }
-    );
 
-    if (patientResponse.ok) {
+    try {
+      const [
+        patientResponse,
+        dentistResponse,
+        locationResponse,
+        serviceResponse,
+      ] = await Promise.all([
+        fetch('https://app.wunschlachen.de/staging/items/patients', {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        }),
+        fetch('https://app.wunschlachen.de/staging/items/dentists', {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        }),
+        fetch('https://app.wunschlachen.de/staging/items/locations', {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        }),
+        fetch('https://app.wunschlachen.de/staging/items/service_provider', {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        }),
+      ]);
+
+      // Processing patientResponse
+      if (patientResponse.ok) {
+        this.patientData = await patientResponse.json();
+        this.patientNames = this.patientData.data.map(
+          (item) => `${item.last_name}, ${item.first_name}`
+        );
+      } else {
+        console.error('Response Error:', patientResponse);
+      }
+
+      // Processing dentistResponse
+      if (dentistResponse.ok) {
+        this.dentistData = await dentistResponse.json();
+        this.dentistNames = this.dentistData.data.map(
+          (item) => `${item.last_name}, ${item.first_name}`
+        );
+      } else {
+        console.error('Response Error:', dentistResponse);
+      }
+
+      // Processing locationResponse
+      if (locationResponse.ok) {
+        this.locationData = await locationResponse.json();
+        this.locationNames = this.locationData.data.map(
+          (item) => `${item.name}`
+        );
+      } else {
+        console.error('Response Error:', locationResponse);
+      }
+
+      // Processing patientResponse
+      if (serviceResponse.ok) {
+        this.serviceData = await serviceResponse.json();
+        this.serviceNames = this.serviceData.data.map(
+          (item) => `${item.first_name}, ${item.last_name}`
+        );
+      } else {
+        console.error('Response Error:', serviceResponse);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
       this.loading = false;
-      this.patientData = await patientResponse.json();
-      console.log('result = ', this.patientData.data);
-    } else {
-      this.loading = false;
-      console.error('Response Error:', patientResponse);
     }
   },
 
@@ -271,49 +321,83 @@ export default {
       this.uploadedFile = file;
     },
 
-    async submitForm() {
-      try {
-        const runtimeConfig = useRuntimeConfig();
-        // Create a FormData object
-        const formData = new FormData();
-        formData.append('patient', this.patient);
-        formData.append('dentist', this.dentist);
-        formData.append('service_provider', this.service_provider);
-        formData.append('location', this.location);
-        formData.append('rd_to_bp', this.rd_to_bp);
-        formData.append('work_details', this.work_details);
+    // async submitForm() {
+    //   if (
+    //     !this.patient ||
+    //     !this.dentist ||
+    //     !this.service_provider ||
+    //     !this.location ||
+    //     !this.rd_to_bp ||
+    //     !this.work_details ||
+    //     !this.uploadedFile
+    //   ) {
+    //     alert('Please fill out all fields.');
+    //     return;
+    //   }
 
-        // Only append file if it exists
-        if (this.uploadedFile) {
-          formData.append('file', this.uploadedFile);
-        }
+    //   // data to be sent
+    //   const formData = {
+    //     patient: this.patient,
+    //     dentist: this.dentist,
+    //     service_provider: this.service_provider,
+    //     location: this.location,
+    //     rd_to_bp: this.rd_to_bp,
+    //     work_details: this.work_details,
+    //     // assuming you have a field for storing the file id
+    //     file: this.uploadedFile ? this.uploadedFile.id : null,
+    //   };
 
-        for (const value of formData.values()) {
-          console.log('formData = ', value);
-        }
+    //   console.log('formData = ', formData);
 
-        // Use fetch API to make a POST request
-        const response = await fetch(
-          'https://app.wunschlachen.de/staging/items/Laboratory_work',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: runtimeConfig.public.BEARER_TOKEN,
-            },
-            body: formData,
-          }
-        );
+    //   try {
+    //     const runtimeConfig = useRuntimeConfig();
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    //     // const response = await createItems({
+    //     //   collection: 'Laboratory Work',
+    //     //   data,
+    //     // });
 
-        const data = await response.json();
-        console.log('response = ', data);
-      } catch (error) {
-        console.error('An error occurred:', error);
-      }
-    },
+    //     // console.log('response === ', response);
+    //     // Create a FormData object
+    //     // const formData = new FormData();
+    //     // formData.append('patient', this.patient);
+    //     // formData.append('dentist', this.dentist);
+    //     // formData.append('service_provider', this.service_provider);
+    //     // formData.append('location', this.location);
+    //     // formData.append('rd_to_bp', this.rd_to_bp);
+    //     // formData.append('work_details', this.work_details);
+
+    //     // // Only append file if it exists
+    //     // if (this.uploadedFile) {
+    //     //   formData.append('file', this.uploadedFile);
+    //     // }
+
+    //     // for (var pair of formData.entries()) {
+    //     //   console.log(pair[0] + ', ' + pair[1]);
+    //     // }
+
+    //     const response = await fetch(
+    //       'https://app.wunschlachen.de/staging/items/Laboratory_work',
+    //       {
+    //         method: 'POST',
+    //         headers: {
+    //           Authorization: runtimeConfig.public.BEARER_TOKEN,
+    //         },
+    //         body: formData,
+    //       }
+    //     );
+
+    //     // Use fetch API to make a POST request
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
+
+    //     const data = await response.json();
+    //     console.log('response = ', data);
+    //   } catch (error) {
+    //     console.error('An error occurred:', error);
+    //   }
+    // },
   },
 };
 </script>

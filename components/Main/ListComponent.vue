@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full desktop:w-1/3 h-[852px] flex flex-col gap-4 p-4 relative bg-neutral-50"
+    class="w-full desktop:w-1/3 h-[852px] flex flex-col gap-4 p-4 relative bg-[#fafafa]"
   >
     <div class="w-6 h-6 left-[16px] top-[16px]">
       <svg
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div
-          class="p-1 bg-white rounded-2xl justify-start items-center gap-1 flex cursor-pointer hover:bg-black hover:bg-opacity-5"
+          class="p-1 bg-[#ffffff] rounded-2xl justify-start items-center gap-1 flex cursor-pointer hover:bg-[#ededed]"
           @click="gotoCreate"
         >
           <div class="w-6 h-6 relative">

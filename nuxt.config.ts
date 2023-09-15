@@ -33,6 +33,15 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
   },
 
+  css: ['vuetify/lib/styles/main.sass'],
+  build: {
+    transpile: ['vuetify'],
+  },
+  vite: {
+    define: {
+      'process.env.DEBUG': false,
+    },
+  },
   /**
    * * Nuxt 3 Modules
    * Official modules: https://nuxt.com/modules

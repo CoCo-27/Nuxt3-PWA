@@ -7,11 +7,18 @@
         <div
           class="px-4 py-2 bg-lime-700 bg-opacity-10 rounded-3xl border border-lime-700 justify-center items-center flex"
         >
-          <div class="text-lime-700 text-sm font-normal">Fertig</div>
+          <div class="text-lime-700 text-sm font-normal">
+            {{ selectedItem?.status }}
+          </div>
         </div>
       </div>
-      <div class="justify-start items-center gap-2 flex">
-        <div class="bg-white rounded-2xl justify-start items-center gap-1 flex">
+      <div
+        class="justify-start items-center gap-2 flex cursor-pointer"
+        @click="goToCreate"
+      >
+        <div
+          class="bg-[#fafafa] rounded-2xl justify-start items-center gap-1 flex hover:bg-[#ededed]"
+        >
           <div class="w-6 h-6 relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -31,12 +38,13 @@
     </div>
     <div class="self-stretch h-7 justify-start items-start gap-2 inline-flex">
       <div class="grow shrink basis-0 text-zinc-800 text-xl font-bold">
-        Zufall Rainer
+        {{ selectedItem?.patient?.last_name }}
+        {{ selectedItem?.patient?.first_name }}
       </div>
       <div
         class="w-[101.38px] text-right text-black text-opacity-20 text-2xl font-bold"
       >
-        #12832
+        {{ selectedItem?.patient?.patient_number }}
       </div>
     </div>
     <div class="self-stretch justify-between items-center gap-4 inline-flex">
@@ -50,11 +58,10 @@
       </div>
     </div>
     <div class="self-stretch text-black text-base font-normal">
-      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-      eirmod tempor invidunt ut.
+      {{ selectedItem?.work_description }}
     </div>
     <div
-      class="self-stretch h-fit p-4 bg-black bg-opacity-5 rounded-lg flex-col justify-start items-start gap-2 flex"
+      class="self-stretch h-fit p-4 bg-[#ededed] rounded-lg flex-col justify-start items-start gap-2 flex"
     >
       <div class="self-stretch text-black text-xs font-bold">
         Eingereichte Unterlagen:
@@ -136,7 +143,7 @@
       </div>
     </div>
     <div
-      class="self-stretch h-[104px] px-4 py-2 bg-black bg-opacity-5 rounded-lg flex-col justify-start items-start gap-2 flex"
+      class="self-stretch h-[104px] px-4 py-2 bg-[#ededed] rounded-lg flex-col justify-start items-start gap-2 flex"
     >
       <div class="self-stretch justify-start items-center gap-2 inline-flex">
         <div
@@ -193,6 +200,20 @@ export default {
     return {
       doctor: doctorImage,
     };
+  },
+
+  props: {
+    selectedItem: Object,
+  },
+
+  mounted() {
+    console.log('RainerComponent = ', this.selectedItem);
+  },
+
+  methods: {
+    goToCreate() {
+      this.$emit('changeComponent', 'CreateComponent');
+    },
   },
 };
 </script>
