@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[140px] p-4 bg-white rounded-lg shadow flex-col justify-between items-start inline-flex cursor-pointer hover:bg-black hover:bg-opacity-5"
+    class="min-h-[112px] p-4 bg-white rounded-lg shadow flex-col justify-between items-start inline-flex cursor-pointer hover:bg-black hover:bg-opacity-5"
     @click="handleClick"
   >
     <div class="self-stretch justify-between items-center gap-2 inline-flex">
@@ -25,10 +25,14 @@
         <div class="text-red-600 text-[8px] font-normal">1</div>
       </div>
     </div>
-    <div class="self-stretch text-black text-sm font-normal">
+    <div
+      class="self-stretch text-black text-sm font-normal overflow-hidden whitespace-nowrap text-overflow-ellipsis"
+    >
       {{ workDescription }}
     </div>
-    <div class="self-stretch justify-between items-center gap-4 inline-flex">
+    <div
+      class="self-stretch justify-between items-center gap-4 inline-flex overflow-hidden whitespace-nowrap text-overflow-ellipsis"
+    >
       <div class="text-black text-opacity-50 text-xs font-normal">
         #{{ number }}
       </div>

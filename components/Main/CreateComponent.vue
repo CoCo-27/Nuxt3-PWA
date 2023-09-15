@@ -2,7 +2,7 @@
   <div class="w-full h-[852px] p-4 relative bg-neutral-50">
     <form
       class="w-full h-full flex flex-col gap-4 relative"
-      @submit.prevent="addItem"
+      @submit.prevent="submitForm"
     >
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div
@@ -25,12 +25,13 @@
           </div>
           <div class="text-black text-base font-normal">Abbrechen</div>
         </div>
-        <div
-          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
-          @click="addItem"
+        <button
+          class="px-4 py-2 bg-black bg-opacity-5 rounded-[100px] justify-start items-center gap-2 flex cursor-pointer text-black text-base font-normal hover:bg-white"
+          @click.prevent="submitForm"
+          type="submit"
         >
-          <div class="text-black text-base font-normal">Speichern</div>
-        </div>
+          Speichern
+        </button>
       </div>
       <div class="self-stretch h-7 justify-start items-start gap-2 inline-flex">
         <div class="grow shrink basis-0 text-zinc-800 text-2xl font-bold">
@@ -84,7 +85,7 @@
           </div>
           <input
             class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
-            v-model="service"
+            v-model="service_provider"
             type="text"
             placeholder="Hier eintreten..."
           />
@@ -112,7 +113,7 @@
           </div>
           <input
             class="grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
-            v-model="date"
+            v-model="rd_to_bp"
             type="date"
           />
         </div>
@@ -126,7 +127,7 @@
           </div>
           <textarea
             class="bg-[#ededed] w-full h-16 p-2 text-sm font-normal"
-            v-model="jobDescription"
+            v-model="work_details"
             type="text"
             placeholder="Hier eintreten..."
           ></textarea>
@@ -201,16 +202,21 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-
 export default {
   name: 'CreateComponent',
 
   data() {
     return {
       patientData: null,
-      uploadedFile: null,
       loading: false,
+
+      patient: null,
+      dentist: null,
+      service_provider: null,
+      location: null,
+      rd_to_bp: null,
+      work_details: null,
+      uploadedFile: null,
     };
   },
 
@@ -264,60 +270,50 @@ export default {
       console.log(file);
       this.uploadedFile = file;
     },
-  },
 
-  setup() {
-    const runtimeConfig = useRuntimeConfig();
-    const patient = ref('');
-    const dentist = ref('');
-    const service = ref('');
-    const location = ref('');
-    const date = ref(null);
-    const jobDescription = ref('');
-
-    const addItem = async () => {
+    async submitForm() {
       try {
+        const runtimeConfig = useRuntimeConfig();
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('patient', this.patient);
+        formData.append('dentist', this.dentist);
+        formData.append('service_provider', this.service_provider);
+        formData.append('location', this.location);
+        formData.append('rd_to_bp', this.rd_to_bp);
+        formData.append('work_details', this.work_details);
+
+        // Only append file if it exists
+        if (this.uploadedFile) {
+          formData.append('file', this.uploadedFile);
+        }
+
+        for (const value of formData.values()) {
+          console.log('formData = ', value);
+        }
+
+        // Use fetch API to make a POST request
         const response = await fetch(
           'https://app.wunschlachen.de/staging/items/Laboratory_work',
           {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
               Authorization: runtimeConfig.public.BEARER_TOKEN,
             },
-            body: JSON.stringify({
-              patient: patient.value,
-              dentist: dentist.value,
-              service_provider: service.value,
-              location: location.value,
-              rd_to_bp: date.value,
-              work_description: jobDescription.value,
-            }),
+            body: formData,
           }
         );
 
         if (!response.ok) {
-          console.error('Server responded with an error', response);
-        } else {
-          // Handle error scenario
-          const data = await response.json();
-          // Handle success scenario
-          console.log('Submitted successfully', data);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      } catch (error) {
-        console.error('Error submitting form', error);
-      }
-    };
 
-    return {
-      patient,
-      dentist,
-      service,
-      location,
-      date,
-      jobDescription,
-      addItem,
-    };
+        const data = await response.json();
+        console.log('response = ', data);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    },
   },
 };
 </script>
