@@ -63,8 +63,13 @@
         <div class="text-black text-xs font-normal">Labor Wunderheilung</div>
       </div>
       <div class="justify-start items-center gap-1 flex">
-        <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-        <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
+        <img
+          class="w-3.5 h-3.5 rounded-[14px]"
+          :src="dentistItem?.profile_image"
+        />
+        <div v-if="dentistItem" class="text-black text-xs font-normal">
+          Dr. {{ dentistItem.first_name }}, {{ dentistItem.last_name }}
+        </div>
       </div>
     </div>
     <div class="self-stretch text-black text-base font-normal">
@@ -214,6 +219,16 @@ export default {
 
   props: {
     selectedItem: Object, // Added new prop to receive the selected item
+    dentistItem: Object,
+  },
+
+  watch: {
+    dentistItem: {
+      handler: function (val) {
+        console.log('dentistItem changed to!!!!!!!!!!!!!!!!!!:', val);
+      },
+      deep: true,
+    },
   },
 
   methods: {
