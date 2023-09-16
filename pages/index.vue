@@ -7,6 +7,7 @@
     <component
       :is="currentComponent"
       :selected-item="selectedItem"
+      :dentistItem="dentistItem"
       :isMobileView="isMobileView"
       @changeComponent="changeComponent"
       @change-selected-item="handleSelectedItemChange"
@@ -27,14 +28,19 @@
     >
       <ListComponent
         @changeComponent="changeComponent"
+        :isMobileView="isMobileView"
         @change-selected-item="handleSelectedItemChange"
       />
       <MessageComponent
         :selected-item="selectedItem"
+        :dentistItem="dentistItem"
         :isMobileView="isMobileView"
         @changeComponent="changeComponent"
       />
-      <RainerComponent @changeComponent="changeComponent" />
+      <RainerComponent
+        :selected-item="selectedItem"
+        @changeComponent="changeComponent"
+      />
     </template>
     <template v-else>
       <CreateComponent @changeComponent="changeComponent" />
@@ -62,6 +68,7 @@ export default {
       currentComponent: 'ListComponent', // default component
       isMobileView: false,
       selectedItem: null,
+      dentistItem: null,
     };
   },
   mounted() {
@@ -87,8 +94,9 @@ export default {
       this.currentComponent = newComponent;
     },
 
-    handleSelectedItemChange(item) {
+    handleSelectedItemChange(item, dentistItem) {
       this.selectedItem = item;
+      this.dentistItem = dentistItem;
 
       if (this.isMobileView) {
         this.currentComponent = 'MessageComponent';

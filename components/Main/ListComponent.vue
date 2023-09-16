@@ -71,6 +71,7 @@
         :number="item.patient?.patient_number"
         :status="item.status"
         :workDescription="item.work_description"
+        :dentist="item.dentist"
         :item="item"
         @item-clicked="handleItemClick"
       />
@@ -96,6 +97,10 @@ export default {
     };
   },
 
+  props: {
+    isMobileView: Boolean,
+  },
+
   created: async function () {
     this.loading = true;
     const runtimeConfig = useRuntimeConfig();
@@ -113,6 +118,11 @@ export default {
       this.loading = false;
       this.result = await response.json();
       console.log('result = ', this.result.data);
+
+      // Auto select the first item
+      if (this.result.data.length > 0 && this.isMobileView === false) {
+        this.handleItemClick(this.result.data[0]);
+      }
     } else {
       this.loading = false;
       console.error('Response Error:', response);
@@ -124,9 +134,9 @@ export default {
       this.$emit('changeComponent', 'CreateComponent');
     },
 
-    handleItemClick(item) {
+    handleItemClick(item, dentistItem) {
       // emit event to parent component (App.vue)
-      this.$emit('change-selected-item', item);
+      this.$emit('change-selected-item', item, dentistItem);
     },
   },
 };

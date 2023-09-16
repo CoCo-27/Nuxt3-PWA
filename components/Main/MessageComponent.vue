@@ -41,15 +41,19 @@
             :class="{
               'bg-lime-700 border-lime-700 text-lime-700':
                 selectedItem.status === 'open',
-              'bg-blue-700 border-blue-700 text-blue-700':
+              'bg-yellow-500 border-yellow-500 text-yellow-500':
                 selectedItem.status === 'dispatched',
+              'bg-blue-700 border-blue-700 text-blue-700':
+                selectedItem.status === 'in_production',
+              'bg-zinc-800 border-zinc-800 text-zinc-800':
+                selectedItem.status === 'done',
             }"
           >
             <div class="text-[10px] font-normal">{{ selectedItem.status }}</div>
           </div>
           <div class="text-zinc-800 text-base font-bold">
-            {{ selectedItem.patient?.last_name }},
-            {{ selectedItem.patient?.first_name }}
+            {{ selectedItem.patient?.first_name }},
+            {{ selectedItem.patient?.last_name }}
           </div>
         </div>
         <div></div>
@@ -62,8 +66,13 @@
           #{{ selectedItem.patient?.patient_number }}
         </div>
         <div class="justify-start items-center gap-1 flex">
-          <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-          <div class="text-black text-xs font-normal">Dr. Peter Silie</div>
+          <img
+            class="w-3.5 h-3.5 rounded-[14px]"
+            :src="result?.data.profile_image"
+          />
+          <div v-if="dentistItem" class="text-black text-xs font-normal">
+            Dr. {{ dentistItem.first_name }}, {{ dentistItem.last_name }}
+          </div>
         </div>
       </div>
     </div>
@@ -137,11 +146,7 @@ export default {
   props: {
     isMobileView: Boolean,
     selectedItem: Object, // Added new prop to receive the selected item
-  },
-
-  mounted() {
-    console.log('MessageComponent = ', this.selectedItem);
-    console.log('isMobileView = ', this.isMobileView);
+    dentistItem: Object,
   },
 
   watch: {
@@ -153,13 +158,17 @@ export default {
     },
   },
 
+  mounted() {
+    console.log('dentist == ', this.dentistItem);
+  },
+
   methods: {
     gotoPre() {
       this.$emit('changeComponent', 'ListComponent');
     },
 
     goToDetail() {
-      this.$emit('changeComponent', 'RainerComponent', this.selectedItem);
+      this.$emit('changeComponent', 'RainerComponent');
     },
   },
 };

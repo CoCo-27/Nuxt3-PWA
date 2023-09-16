@@ -40,11 +40,13 @@
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
+          <div
+            class="w-2/6 sm:w-1/6 text-black text-opacity-75 py-3 text-xs font-bold"
+          >
             Patient:
           </div>
           <v-autocomplete
-            class="w-5/6"
+            class="w-4/6 sm:w-5/6"
             :items="this.patientNames"
             variant="outlined"
             hide-details
@@ -53,11 +55,13 @@
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
+          <div
+            class="w-2/6 sm:w-1/6 text-black text-opacity-75 py-3 text-xs font-bold"
+          >
             Zahnartzt:
           </div>
           <v-autocomplete
-            class="w-5/6"
+            class="w-4/6 sm:w-5/6"
             :items="this.dentistNames"
             variant="outlined"
             hide-details
@@ -66,11 +70,13 @@
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
+          <div
+            class="w-2/6 sm:w-1/6 text-black text-opacity-75 py-3 text-xs font-bold"
+          >
             Dienstleister:
           </div>
           <v-autocomplete
-            class="w-5/6"
+            class="w-4/6 sm:w-5/6"
             :items="this.locationNames"
             variant="outlined"
             hide-details
@@ -79,11 +85,13 @@
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="w-1/6 text-black text-opacity-75 py-3 text-xs font-bold">
+          <div
+            class="w-2/6 sm:w-1/6 text-black text-opacity-75 py-3 text-xs font-bold"
+          >
             Standort:
           </div>
           <v-autocomplete
-            class="w-5/6"
+            class="w-4/6 sm:w-5/6"
             :items="this.serviceNames"
             variant="outlined"
             hide-details
@@ -92,11 +100,13 @@
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
         >
-          <div class="w-1/6 py-3 text-black text-opacity-75 text-xs font-bold">
+          <div
+            class="w-2/6 sm:w-1/6 py-3 text-black text-opacity-75 text-xs font-bold"
+          >
             Rd zu Bp:
           </div>
           <input
-            class="w-5/6 grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
+            class="w-4/6 sm:w-5/6 grow shrink basis-0 bg-[#ededed] h-full px-2 text-sm font-normal"
             v-model="rd_to_bp"
             type="date"
           />
@@ -251,7 +261,7 @@ export default {
       if (patientResponse.ok) {
         this.patientData = await patientResponse.json();
         this.patientNames = this.patientData.data.map(
-          (item) => `${item.last_name}, ${item.first_name}`
+          (item) => `${item.first_name}, ${item.last_name}`
         );
       } else {
         console.error('Response Error:', patientResponse);
@@ -261,7 +271,7 @@ export default {
       if (dentistResponse.ok) {
         this.dentistData = await dentistResponse.json();
         this.dentistNames = this.dentistData.data.map(
-          (item) => `${item.last_name}, ${item.first_name}`
+          (item) => `${item.first_name}, ${item.last_name}`
         );
       } else {
         console.error('Response Error:', dentistResponse);

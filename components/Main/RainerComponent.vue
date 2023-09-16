@@ -6,8 +6,18 @@
       <div class="justify-start items-center gap-2 flex">
         <div
           class="px-4 py-2 bg-lime-700 bg-opacity-10 rounded-3xl border border-lime-700 justify-center items-center flex"
+          :class="{
+            'bg-lime-700 border-lime-700 text-lime-700':
+              selectedItem?.status === 'open',
+            'bg-yellow-500 border-yellow-500 text-yellow-500':
+              selectedItem?.status === 'dispatched',
+            'bg-blue-700 border-blue-700 text-blue-700':
+              selectedItem?.status === 'in_production',
+            'bg-zinc-800 border-zinc-800 text-zinc-800':
+              selectedItem?.status === 'done',
+          }"
         >
-          <div class="text-lime-700 text-sm font-normal">
+          <div class="text-sm font-normal">
             {{ selectedItem?.status }}
           </div>
         </div>
@@ -38,8 +48,8 @@
     </div>
     <div class="self-stretch h-7 justify-start items-start gap-2 inline-flex">
       <div class="grow shrink basis-0 text-zinc-800 text-xl font-bold">
-        {{ selectedItem?.patient?.last_name }}
         {{ selectedItem?.patient?.first_name }}
+        {{ selectedItem?.patient?.last_name }}
       </div>
       <div
         class="w-[101.38px] text-right text-black text-opacity-20 text-2xl font-bold"
@@ -203,11 +213,7 @@ export default {
   },
 
   props: {
-    selectedItem: Object,
-  },
-
-  mounted() {
-    console.log('RainerComponent = ', this.selectedItem);
+    selectedItem: Object, // Added new prop to receive the selected item
   },
 
   methods: {
