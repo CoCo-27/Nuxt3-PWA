@@ -71,7 +71,7 @@
             :src="result?.data.profile_image"
           />
           <div v-if="dentistItem" class="text-black text-xs font-normal">
-            Dr. {{ dentistItem.first_name }}, {{ dentistItem.last_name }}
+            Dr. {{ dentistItem.first_name }} {{ dentistItem.last_name }}
           </div>
         </div>
       </div>

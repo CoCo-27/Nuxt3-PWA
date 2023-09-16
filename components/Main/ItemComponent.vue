@@ -48,7 +48,7 @@
           v-if="result && result.data"
           class="text-black text-xs font-normal"
         >
-          Dr. {{ result?.data.first_name }}, {{ result?.data.last_name }}
+          Dr. {{ result?.data.first_name }} {{ result?.data.last_name }}
         </div>
       </div>
     </div>
