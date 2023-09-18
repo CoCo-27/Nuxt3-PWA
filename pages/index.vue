@@ -7,7 +7,6 @@
     <component
       :is="currentComponent"
       :selected-item="selectedItem"
-      :dentistItem="dentistItem"
       :isMobileView="isMobileView"
       @changeComponent="changeComponent"
       @change-selected-item="handleSelectedItemChange"
@@ -33,7 +32,6 @@
       />
       <MessageComponent
         :selected-item="selectedItem"
-        :dentistItem="dentistItem"
         :isMobileView="isMobileView"
         @changeComponent="changeComponent"
       />
@@ -94,9 +92,8 @@ export default {
       this.currentComponent = newComponent;
     },
 
-    handleSelectedItemChange(item, dentistItem) {
+    handleSelectedItemChange(item) {
       this.selectedItem = item;
-      this.dentistItem = dentistItem;
 
       if (this.isMobileView) {
         this.currentComponent = 'MessageComponent';

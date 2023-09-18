@@ -18,7 +18,7 @@
         >
           <div class="text-[10px] font-normal">{{ status }}</div>
         </div>
-        <div class="text-zinc-800 text-base font-bold">
+        <div v-if="item.patient" class="text-zinc-800 text-base font-bold">
           {{ firstName }}, {{ lastName }}
         </div>
       </div>
@@ -39,16 +39,10 @@
       <div class="text-black text-opacity-50 text-xs font-normal">
         #{{ number }}
       </div>
-      <div class="justify-start items-center gap-1 flex">
-        <img
-          class="w-3.5 h-3.5 rounded-[14px]"
-          :src="result?.data.profile_image"
-        />
-        <div
-          v-if="result && result.data"
-          class="text-black text-xs font-normal"
-        >
-          Dr. {{ result?.data.first_name }} {{ result?.data.last_name }}
+      <div v-if="item.dentist" class="justify-start items-center gap-1 flex">
+        <img class="w-3.5 h-3.5 rounded-[14px]" :src="this.imageSrc" />
+        <div class="text-black text-xs font-normal">
+          Dr. {{ dentist_firstName }} {{ dentist_lastName }}
         </div>
       </div>
     </div>
@@ -61,7 +55,7 @@ export default {
 
   data() {
     return {
-      result: null,
+      imageSrc: null,
     };
   },
 
@@ -73,39 +67,30 @@ export default {
     number: { type: String },
     status: { type: String },
     workDescription: { type: String },
-    dentist: { type: String },
+    dentist_firstName: { type: String },
+    dentist_lastName: { type: String },
+    dentist_image: { type: String },
   },
 
-  created: async function () {
+  mounted() {
     const runtimeConfig = useRuntimeConfig();
-    console.log('dentistID = ', this.dentist);
-
-    if (this.dentist) {
-      const dentistInfo = await fetch(
-        `https://app.wunschlachen.de/staging/items/dentists/${this.dentist}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: runtimeConfig.public.BEARER_TOKEN,
-          },
-        }
-      );
-
-      if (dentistInfo.ok) {
-        this.loading = false;
-        this.result = await dentistInfo.json();
-        console.log('result = ', this.result.data);
-      } else {
-        this.loading = false;
-        console.error('Response Error:', dentistInfo);
-      }
-    }
+    fetch(`https://app.wunschlachen.de/staging/assets/${this.dentist_image}`, {
+      method: 'GET',
+      headers: {
+        Authorization: runtimeConfig.public.BEARER_TOKEN,
+      },
+    })
+      .then((response) => response.blob())
+      .then((data) => {
+        this.imageSrc = URL.createObjectURL(data);
+      })
+      .catch((error) => console.error(error));
   },
 
   methods: {
     handleClick() {
       // Emit a custom event with item data
-      this.$emit('item-clicked', this.item, this.result.data);
+      this.$emit('item-clicked', this.item);
     },
   },
 };

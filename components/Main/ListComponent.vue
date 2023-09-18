@@ -71,7 +71,9 @@
         :number="item.patient?.patient_number"
         :status="item.status"
         :workDescription="item.work_description"
-        :dentist="item.dentist"
+        :dentist_firstName="item.dentist?.first_name"
+        :dentist_lastName="item.dentist?.last_name"
+        :dentist_image="item.dentist?.profile_image?.id"
         :item="item"
         @item-clicked="handleItemClick"
       />
@@ -105,7 +107,7 @@ export default {
     this.loading = true;
     const runtimeConfig = useRuntimeConfig();
     const response = await fetch(
-      'https://app.wunschlachen.de/staging/items/Laboratory_work?fields=*%2Cpatient.first_name%2Cpatient.last_name%2Cpatient.patient_number&=',
+      'https://app.wunschlachen.de/staging/items/Laboratory_work?fields=*%2Cpatient.first_name%2Cpatient.last_name%2Cpatient.patient_number%2Cdentist.first_name%2Cdentist.last_name%2Cdentist.profile_image.id&=',
       {
         method: 'GET',
         headers: {
@@ -134,9 +136,9 @@ export default {
       this.$emit('changeComponent', 'CreateComponent');
     },
 
-    handleItemClick(item, dentistItem) {
+    handleItemClick(item) {
       // emit event to parent component (App.vue)
-      this.$emit('change-selected-item', item, dentistItem);
+      this.$emit('change-selected-item', item);
     },
   },
 };

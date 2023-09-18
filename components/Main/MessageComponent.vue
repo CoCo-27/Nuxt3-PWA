@@ -51,7 +51,10 @@
           >
             <div class="text-[10px] font-normal">{{ selectedItem.status }}</div>
           </div>
-          <div class="text-zinc-800 text-base font-bold">
+          <div
+            v-if="selectedItem.patient"
+            class="text-zinc-800 text-base font-bold"
+          >
             {{ selectedItem.patient?.first_name }},
             {{ selectedItem.patient?.last_name }}
           </div>
@@ -65,45 +68,44 @@
         <div class="text-black text-opacity-50 text-xs font-normal">
           #{{ selectedItem.patient?.patient_number }}
         </div>
-        <div class="justify-start items-center gap-1 flex">
-          <img
-            class="w-3.5 h-3.5 rounded-[14px]"
-            :src="result?.data.profile_image"
-          />
-          <div v-if="dentistItem" class="text-black text-xs font-normal">
-            Dr. {{ dentistItem.first_name }} {{ dentistItem.last_name }}
+        <div
+          v-if="selectedItem?.dentist"
+          class="justify-start items-center gap-1 flex"
+        >
+          <img class="w-3.5 h-3.5 rounded-[14px]" :src="imageSrc" />
+          <div class="text-black text-xs font-normal">
+            Dr. {{ selectedItem?.dentist?.first_name }}
+            {{ selectedItem?.dentist?.last_name }}
           </div>
         </div>
       </div>
     </div>
 
     <div v-else></div>
-    <div
-      class="absolute top-[600px] left-[16px] flex items-end space-x-4 w-full h-auto"
-    >
-      <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
-      <div class="bg-white rounded-lg shadow flex flex-col space-y-1 py-2 px-4">
-        <div class="flex justify-between items-center text-xs">
-          <div class="font-bold text-black">Dr. Peter Silie</div>
-          <div class="text-black text-opacity-50">vor 3 min</div>
-        </div>
-        <div class="text-sm text-black">
-          Guten Tag Herr Paetz wie kann ich Ihnen <br />heute helfen?
-        </div>
-      </div>
-    </div>
 
     <div
-      class="absolute left-[82px] right-[16px] top-[692px] w-auto h-auto px-4 py-2 bg-lime-600 bg-opacity-10 rounded-tl-lg rounded-tr-lg rounded-bl-lg shadow flex flex-col justify-start items-start gap-1"
+      class="flex flex-col-reverse space-y-reverse space-y-4 w-full h-full pl-4 pb-2 overflow-y-auto overflow-x-hidden"
     >
-      <div class="self-stretch justify-between items-center gap-1 inline-flex">
-        <div class="text-black text-xs font-bold">Ich</div>
-        <div class="text-black text-opacity-50 text-xs font-normal">
-          vor 3 min
+      <div
+        class="flex items-end space-x-4"
+        v-for="(info, index) in this.messagesvalue"
+        :key="index"
+      >
+        <img class="w-3.5 h-3.5 rounded-[14px]" :src="imageSrc" />
+        <div
+          class="space-y-1 px-4 py-2 bg-white rounded-tl-lg rounded-tr-lg rounded-br-lg shadow flex-col justify-start items-start gap-1 inline-flex"
+        >
+          <div class="min-w-[295px] flex justify-between items-center text-xs">
+            <div class="font-bold text-black">
+              Dr. {{ selectedItem?.dentist?.first_name }}
+              {{ selectedItem?.dentist?.last_name }}
+            </div>
+            <div class="text-black text-opacity-50">vor 3 min</div>
+          </div>
+          <div class="text-sm text-black">
+            {{ info.data.message }}
+          </div>
         </div>
-      </div>
-      <div class="text-black text-sm font-normal">
-        Heute benötige ich einiges von Ihnen <br />es wird ein großer Auftrag.
       </div>
     </div>
 
@@ -132,43 +134,87 @@
 </template>
 
 <script>
-import doctorImage from 'assets/doctor.png';
-
 export default {
   name: 'MessageComponent',
 
   data() {
     return {
-      doctor: doctorImage,
+      imageSrc: null,
+      messagesvalue: [],
     };
+  },
+
+  mounted() {
+    console.log('Messages ID === ', this.selectedItem?.Messages);
+
+    this.fetchMessages();
+    this.fetchImage();
   },
 
   props: {
     isMobileView: Boolean,
     selectedItem: Object, // Added new prop to receive the selected item
-    dentistItem: Object,
   },
 
   watch: {
     selectedItem: {
-      handler: function (val) {
-        console.log('selectedItem changed to:', val);
+      handler(newVal, oldVal) {
+        if (newVal) {
+          this.fetchImage();
+
+          this.fetchMessages();
+        }
       },
       deep: true,
     },
   },
 
-  mounted() {
-    console.log('dentist == ', this.dentistItem);
-  },
-
   methods: {
     gotoPre() {
+      console.log(this.messagesvalue);
       this.$emit('changeComponent', 'ListComponent');
     },
 
     goToDetail() {
       this.$emit('changeComponent', 'RainerComponent');
+    },
+
+    async fetchImage() {
+      const runtimeConfig = useRuntimeConfig();
+      fetch(
+        `https://app.wunschlachen.de/staging/assets/${this.selectedItem?.dentist?.profile_image.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        }
+      )
+        .then((response) => response.blob())
+        .then((data) => {
+          this.imageSrc = URL.createObjectURL(data);
+        })
+        .catch((error) => console.error(error));
+    },
+
+    async fetchMessages() {
+      const runtimeConfig = useRuntimeConfig();
+
+      const messageRequests = this.selectedItem?.Messages.map((message) =>
+        fetch(`https://app.wunschlachen.de/staging/items/messages/${message}`, {
+          method: 'GET',
+          headers: {
+            Authorization: runtimeConfig.public.BEARER_TOKEN,
+          },
+        })
+      );
+
+      const messages = await Promise.all(messageRequests);
+      const jsonMessages = await Promise.all(
+        messages.map((message) => message.json())
+      );
+
+      this.messagesvalue = jsonMessages;
     },
   },
 };

@@ -47,7 +47,10 @@
       </div>
     </div>
     <div class="self-stretch h-7 justify-start items-start gap-2 inline-flex">
-      <div class="grow shrink basis-0 text-zinc-800 text-xl font-bold">
+      <div
+        v-if="selectedItem?.patient"
+        class="grow shrink basis-0 text-zinc-800 text-xl font-bold"
+      >
         {{ selectedItem?.patient?.first_name }}
         {{ selectedItem?.patient?.last_name }}
       </div>
@@ -59,16 +62,17 @@
     </div>
     <div class="self-stretch justify-between items-center gap-4 inline-flex">
       <div class="justify-start items-center gap-1 flex">
-        <img class="w-3.5 h-3.5 rounded-[14px]" :src="doctor" />
+        <!-- <img class="w-3.5 h-3.5 rounded-[14px]" :src="patient" /> -->
         <div class="text-black text-xs font-normal">Labor Wunderheilung</div>
       </div>
-      <div class="justify-start items-center gap-1 flex">
-        <img
-          class="w-3.5 h-3.5 rounded-[14px]"
-          :src="dentistItem?.profile_image"
-        />
-        <div v-if="dentistItem" class="text-black text-xs font-normal">
-          Dr. {{ dentistItem.first_name }} {{ dentistItem.last_name }}
+      <div
+        v-if="selectedItem?.dentist"
+        class="justify-start items-center gap-1 flex"
+      >
+        <img class="w-3.5 h-3.5 rounded-[14px]" :src="imageSrc" />
+        <div class="text-black text-xs font-normal">
+          Dr. {{ selectedItem?.dentist?.first_name }}
+          {{ selectedItem?.dentist?.last_name }}
         </div>
       </div>
     </div>
@@ -206,26 +210,60 @@
 </template>
 
 <script>
-import doctorImage from 'assets/doctor.png';
+import patientImg from 'assets/patient.png';
 
 export default {
   name: 'RainerComponent',
 
   data() {
     return {
-      doctor: doctorImage,
+      patient: patientImg,
+      imageSrc: null,
     };
   },
 
   props: {
     selectedItem: Object, // Added new prop to receive the selected item
-    dentistItem: Object,
+  },
+
+  mounted() {
+    const runtimeConfig = useRuntimeConfig();
+    fetch(
+      `https://app.wunschlachen.de/staging/assets/${this.selectedItem?.dentist?.profile_image.id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: runtimeConfig.public.BEARER_TOKEN,
+        },
+      }
+    )
+      .then((response) => response.blob())
+      .then((data) => {
+        this.imageSrc = URL.createObjectURL(data);
+      })
+      .catch((error) => console.error(error));
   },
 
   watch: {
-    dentistItem: {
-      handler: function (val) {
-        console.log('dentistItem changed to!!!!!!!!!!!!!!!!!!:', val);
+    selectedItem: {
+      handler(newVal, oldVal) {
+        if (newVal) {
+          const runtimeConfig = useRuntimeConfig();
+          fetch(
+            `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image.id}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: runtimeConfig.public.BEARER_TOKEN,
+              },
+            }
+          )
+            .then((response) => response.blob())
+            .then((data) => {
+              this.imageSrc = URL.createObjectURL(data);
+            })
+            .catch((error) => console.error(error));
+        }
       },
       deep: true,
     },

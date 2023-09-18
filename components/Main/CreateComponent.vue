@@ -1,6 +1,9 @@
 <template>
   <div class="w-full h-[852px] p-4 relative bg-neutral-50">
-    <form class="w-full h-full flex flex-col gap-4 relative">
+    <form
+      class="w-full h-full flex flex-col gap-4 relative"
+      @submit.prevent="submitForm"
+    >
       <div class="self-stretch justify-between items-center gap-2 inline-flex">
         <div
           class="pl-2 pr-4 py-2 bg-[#ededed] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer hover:bg-white"
@@ -24,6 +27,7 @@
         </div>
         <button
           class="px-4 py-2 bg-[#ededed] rounded-[100px] justify-start items-center gap-2 flex cursor-pointer text-black text-base font-normal hover:bg-white"
+          @click.prevent="submitForm"
           type="submit"
         >
           Speichern
@@ -48,9 +52,13 @@
           <v-autocomplete
             class="w-4/6 sm:w-5/6"
             :items="this.patientNames"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             hide-details
-          ></v-autocomplete>
+            v-model="selectedPatientId"
+          >
+          </v-autocomplete>
         </div>
         <div
           class="self-stretch px-4 py-2 bg-[#ededed] rounded-[100px] justify-center items-center gap-2 inline-flex"
@@ -63,8 +71,11 @@
           <v-autocomplete
             class="w-4/6 sm:w-5/6"
             :items="this.dentistNames"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             hide-details
+            v-model="selectedDentistId"
           ></v-autocomplete>
         </div>
         <div
@@ -78,8 +89,11 @@
           <v-autocomplete
             class="w-4/6 sm:w-5/6"
             :items="this.locationNames"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             hide-details
+            v-model="selectedLocationId"
           ></v-autocomplete>
         </div>
         <div
@@ -93,8 +107,11 @@
           <v-autocomplete
             class="w-4/6 sm:w-5/6"
             :items="this.serviceNames"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             hide-details
+            v-model="selectedServiceId"
           ></v-autocomplete>
         </div>
         <div
@@ -182,7 +199,10 @@
                 />
               </svg>
             </div>
-            <div v-if="uploadedFile" class="text-blue-700 font-bold text-lg">
+            <div
+              v-if="uploadedFile"
+              class="text-blue-700 font-bold text-base sm:text-lg"
+            >
               {{ uploadedFile.name }} uploaded
             </div>
             <div v-else class="text-black text-sm font-bold">
@@ -217,6 +237,11 @@ export default {
       rd_to_bp: null,
       work_details: null,
       uploadedFile: null,
+
+      selectedPatientId: null,
+      selectedDentistId: null,
+      selectedLocationId: null,
+      selectedServiceId: null,
     };
   },
 
@@ -260,9 +285,12 @@ export default {
       // Processing patientResponse
       if (patientResponse.ok) {
         this.patientData = await patientResponse.json();
-        this.patientNames = this.patientData.data.map(
-          (item) => `${item.first_name}, ${item.last_name}`
-        );
+        this.patientNames = this.patientData.data.map((item) => {
+          return {
+            name: `${item.first_name}, ${item.last_name}`,
+            id: item.id,
+          };
+        });
       } else {
         console.error('Response Error:', patientResponse);
       }
@@ -270,9 +298,12 @@ export default {
       // Processing dentistResponse
       if (dentistResponse.ok) {
         this.dentistData = await dentistResponse.json();
-        this.dentistNames = this.dentistData.data.map(
-          (item) => `${item.first_name}, ${item.last_name}`
-        );
+        this.dentistNames = this.dentistData.data.map((item) => {
+          return {
+            name: `${item.first_name}, ${item.last_name}`,
+            id: item.id,
+          };
+        });
       } else {
         console.error('Response Error:', dentistResponse);
       }
@@ -280,9 +311,12 @@ export default {
       // Processing locationResponse
       if (locationResponse.ok) {
         this.locationData = await locationResponse.json();
-        this.locationNames = this.locationData.data.map(
-          (item) => `${item.name}`
-        );
+        this.locationNames = this.locationData.data.map((item) => {
+          return {
+            name: `${item.name}`,
+            id: item.id,
+          };
+        });
       } else {
         console.error('Response Error:', locationResponse);
       }
@@ -290,9 +324,12 @@ export default {
       // Processing patientResponse
       if (serviceResponse.ok) {
         this.serviceData = await serviceResponse.json();
-        this.serviceNames = this.serviceData.data.map(
-          (item) => `${item.first_name}, ${item.last_name}`
-        );
+        this.serviceNames = this.serviceData.data.map((item) => {
+          return {
+            name: `${item.first_name}, ${item.last_name}`,
+            id: item.id,
+          };
+        });
       } else {
         console.error('Response Error:', serviceResponse);
       }
@@ -331,83 +368,43 @@ export default {
       this.uploadedFile = file;
     },
 
-    // async submitForm() {
-    //   if (
-    //     !this.patient ||
-    //     !this.dentist ||
-    //     !this.service_provider ||
-    //     !this.location ||
-    //     !this.rd_to_bp ||
-    //     !this.work_details ||
-    //     !this.uploadedFile
-    //   ) {
-    //     alert('Please fill out all fields.');
-    //     return;
-    //   }
+    async submitForm() {
+      // data to be sent
+      const formData = {
+        patient: this.selectedPatientId,
+        dentist: this.selectedDentistId,
+        service_provider: this.selectedServiceId,
+        location: this.selectedLocationId,
+        rd_to_bp: this.rd_to_bp,
+        work_details: this.work_details,
+        // assuming you have a field for storing the file id
+        files: this.uploadedFile ? this.uploadedFile.id : null,
+      };
 
-    //   // data to be sent
-    //   const formData = {
-    //     patient: this.patient,
-    //     dentist: this.dentist,
-    //     service_provider: this.service_provider,
-    //     location: this.location,
-    //     rd_to_bp: this.rd_to_bp,
-    //     work_details: this.work_details,
-    //     // assuming you have a field for storing the file id
-    //     file: this.uploadedFile ? this.uploadedFile.id : null,
-    //   };
+      try {
+        const runtimeConfig = useRuntimeConfig();
+        const response = await fetch(
+          'https://app.wunschlachen.de/staging/items/Laboratory_work',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: runtimeConfig.public.BEARER_TOKEN,
+            },
+            body: formData,
+          }
+        );
 
-    //   console.log('formData = ', formData);
+        // Use fetch API to make a POST request
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    //   try {
-    //     const runtimeConfig = useRuntimeConfig();
-
-    //     // const response = await createItems({
-    //     //   collection: 'Laboratory Work',
-    //     //   data,
-    //     // });
-
-    //     // console.log('response === ', response);
-    //     // Create a FormData object
-    //     // const formData = new FormData();
-    //     // formData.append('patient', this.patient);
-    //     // formData.append('dentist', this.dentist);
-    //     // formData.append('service_provider', this.service_provider);
-    //     // formData.append('location', this.location);
-    //     // formData.append('rd_to_bp', this.rd_to_bp);
-    //     // formData.append('work_details', this.work_details);
-
-    //     // // Only append file if it exists
-    //     // if (this.uploadedFile) {
-    //     //   formData.append('file', this.uploadedFile);
-    //     // }
-
-    //     // for (var pair of formData.entries()) {
-    //     //   console.log(pair[0] + ', ' + pair[1]);
-    //     // }
-
-    //     const response = await fetch(
-    //       'https://app.wunschlachen.de/staging/items/Laboratory_work',
-    //       {
-    //         method: 'POST',
-    //         headers: {
-    //           Authorization: runtimeConfig.public.BEARER_TOKEN,
-    //         },
-    //         body: formData,
-    //       }
-    //     );
-
-    //     // Use fetch API to make a POST request
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-
-    //     const data = await response.json();
-    //     console.log('response = ', data);
-    //   } catch (error) {
-    //     console.error('An error occurred:', error);
-    //   }
-    // },
+        const data = await response.json();
+        console.log('response = ', data);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    },
   },
 };
 </script>
