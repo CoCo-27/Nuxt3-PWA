@@ -95,7 +95,7 @@
         <div
           class="space-y-1 px-4 py-2 bg-white rounded-tl-lg rounded-tr-lg rounded-br-lg shadow flex-col justify-start items-start gap-1 inline-flex"
         >
-          <div class="min-w-[295px] flex justify-between items-center text-xs">
+          <div class="min-w-[260px] flex justify-between items-center text-xs">
             <div class="font-bold text-black">
               Dr. {{ selectedItem?.dentist?.first_name }}
               {{ selectedItem?.dentist?.last_name }}
@@ -160,9 +160,10 @@ export default {
     selectedItem: {
       handler(newVal, oldVal) {
         if (newVal) {
-          this.fetchImage();
+          console.log('watch !!!! ^^^^ === ', newVal);
+          this.fetchImage(newVal);
 
-          this.fetchMessages();
+          this.fetchMessages(newVal);
         }
       },
       deep: true,
@@ -179,10 +180,10 @@ export default {
       this.$emit('changeComponent', 'RainerComponent');
     },
 
-    async fetchImage() {
+    async fetchImage(newVal) {
       const runtimeConfig = useRuntimeConfig();
       fetch(
-        `https://app.wunschlachen.de/staging/assets/${this.selectedItem?.dentist?.profile_image.id}`,
+        `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image.id}`,
         {
           method: 'GET',
           headers: {
@@ -197,24 +198,31 @@ export default {
         .catch((error) => console.error(error));
     },
 
-    async fetchMessages() {
+    async fetchMessages(newVal) {
       const runtimeConfig = useRuntimeConfig();
 
-      const messageRequests = this.selectedItem?.Messages.map((message) =>
-        fetch(`https://app.wunschlachen.de/staging/items/messages/${message}`, {
-          method: 'GET',
-          headers: {
-            Authorization: runtimeConfig.public.BEARER_TOKEN,
-          },
-        })
-      );
+      if (Array.isArray(newVal?.Messages)) {
+        const messageRequests = newVal?.Messages?.map((message) =>
+          fetch(
+            `https://app.wunschlachen.de/staging/items/messages/${message}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: runtimeConfig.public.BEARER_TOKEN,
+              },
+            }
+          )
+        );
 
-      const messages = await Promise.all(messageRequests);
-      const jsonMessages = await Promise.all(
-        messages.map((message) => message.json())
-      );
+        const messages = await Promise.all(messageRequests);
+        const jsonMessages = await Promise.all(
+          messages.map((message) => message.json())
+        );
 
-      this.messagesvalue = jsonMessages;
+        this.messagesvalue = jsonMessages;
+      } else {
+        this.messagesvalue = []; // or set to a default value to handle the case when newVal.Messages is undefined
+      }
     },
   },
 };
