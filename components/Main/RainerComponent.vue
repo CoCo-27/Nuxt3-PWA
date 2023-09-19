@@ -229,7 +229,7 @@ export default {
   mounted() {
     const runtimeConfig = useRuntimeConfig();
     fetch(
-      `https://app.wunschlachen.de/staging/assets/${this.selectedItem?.dentist?.profile_image.id}`,
+      `https://app.wunschlachen.de/staging/assets/${this.selectedItem?.dentist?.profile_image?.id}`,
       {
         method: 'GET',
         headers: {
@@ -250,7 +250,7 @@ export default {
         if (newVal) {
           const runtimeConfig = useRuntimeConfig();
           fetch(
-            `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image.id}`,
+            `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image?.id}`,
             {
               method: 'GET',
               headers: {

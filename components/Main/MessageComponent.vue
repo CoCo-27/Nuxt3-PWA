@@ -61,7 +61,7 @@
         </div>
         <div></div>
       </div>
-      <div class="self-stretch text-black text-xs font-normal">
+      <div class="self-stretch text-black text-xs font-normal break-all">
         {{ selectedItem.work_description }}
       </div>
       <div class="self-stretch justify-between items-center gap-4 inline-flex">
@@ -105,7 +105,7 @@
               {{ timeAgo(info.data.date_created) }}
             </div>
           </div>
-          <div class="text-sm text-black">
+          <div class="text-sm text-black break-all">
             {{ info.data.message }}
           </div>
         </div>
@@ -241,20 +241,27 @@ export default {
 
     async fetchImage(newVal) {
       const runtimeConfig = useRuntimeConfig();
-      fetch(
-        `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image.id}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: runtimeConfig.public.BEARER_TOKEN,
-          },
-        }
-      )
-        .then((response) => response.blob())
-        .then((data) => {
-          this.imageSrc = URL.createObjectURL(data);
-        })
-        .catch((error) => console.error(error));
+
+      // Check if profile_image.id exists before making the fetch request
+      if (newVal?.dentist?.profile_image?.id) {
+        fetch(
+          `https://app.wunschlachen.de/staging/assets/${newVal?.dentist?.profile_image?.id}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: runtimeConfig.public.BEARER_TOKEN,
+            },
+          }
+        )
+          .then((response) => response.blob())
+          .then((data) => {
+            this.imageSrc = URL.createObjectURL(data);
+          })
+          .catch((error) => console.error(error));
+      } else {
+        // Optionally, handle the case when profile_image.id is null
+        this.imageSrc = ''; // default or fallback image
+      }
     },
 
     async fetchMessages(newVal) {
