@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    <div class="self-stretch text-black text-base font-normal">
+    <div class="self-stretch text-black text-base font-normal break-all">
       {{ selectedItem?.work_description }}
     </div>
     <div
