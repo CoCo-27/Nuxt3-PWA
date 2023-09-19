@@ -94,14 +94,16 @@
       >
         <img class="w-3.5 h-3.5 rounded-[14px]" :src="imageSrc" />
         <div
-          class="space-y-1 px-4 py-2 bg-white rounded-tl-lg rounded-tr-lg rounded-br-lg shadow flex-col justify-start items-start gap-1 inline-flex"
+          class="min-w-[260px] space-y-1 px-4 py-2 bg-white rounded-tl-lg rounded-tr-lg rounded-br-lg shadow flex-col justify-start items-start gap-1 inline-flex"
         >
-          <div class="min-w-[260px] flex justify-between items-center text-xs">
+          <div class="w-full flex justify-between items-center text-xs">
             <div class="font-bold text-black">
               Dr. {{ selectedItem?.dentist?.first_name }}
               {{ selectedItem?.dentist?.last_name }}
             </div>
-            <div class="text-black text-opacity-50">vor 3 min</div>
+            <div class="text-black text-opacity-50">
+              {{ timeAgo(info.data.date_created) }}
+            </div>
           </div>
           <div class="text-sm text-black">
             {{ info.data.message }}
@@ -200,6 +202,34 @@ export default {
   },
 
   methods: {
+    timeAgo(isoString) {
+      const date_created = new Date(isoString);
+      const now = new Date();
+      let diffMs = now - date_created; // milliseconds between now & date_created
+
+      // Ensure diffMs is not negative
+      diffMs = Math.max(0, diffMs);
+
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // days
+      const diffHrs = Math.floor(
+        (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      ); // hours
+      const diffMins = Math.round((diffMs % (1000 * 60 * 60)) / (1000 * 60)); // minutes
+
+      // If diffDays, diffHrs & diffMins are 0, message has just been created
+      if (diffDays === 0 && diffHrs === 0 && diffMins === 0) {
+        return 'Just now';
+      } else if (diffDays > 0) {
+        return diffDays > 1 ? `${diffDays} days ago` : `${diffDays} day ago`;
+      } else if (diffHrs > 0) {
+        return diffHrs > 1 ? `${diffHrs} hours ago` : `${diffHrs} hour ago`;
+      } else {
+        return diffMins > 1
+          ? `${diffMins} minutes ago`
+          : `${diffMins} minute ago`;
+      }
+    },
+
     gotoPre() {
       console.log(this.messagesvalue);
       this.$emit('changeComponent', 'ListComponent');
@@ -256,6 +286,7 @@ export default {
     },
 
     async sendMessage() {
+      console.log('when click button === ', this.selectedItem);
       const runtimeConfig = useRuntimeConfig();
       if (this.messageInput.trim()) {
         console.log('message === ', this.messageInput);
@@ -280,6 +311,7 @@ export default {
         }
 
         const newMessage = await response.json();
+        console.log('^^^^^^^^^^^^^^^^^^^^^ = ', this.messagesvalue);
         console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
         this.messagesvalue.unshift(newMessage);
         this.messageInput = '';
