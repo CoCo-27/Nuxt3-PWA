@@ -88,6 +88,7 @@
     >
       <div
         class="flex items-end space-x-4"
+        v-if="this.messagesvalue && this.messagesvalue.length > 0"
         v-for="(info, index) in this.messagesvalue"
         :key="index"
       >
@@ -200,7 +201,6 @@ export default {
 
   methods: {
     gotoPre() {
-      console.log(this.messagesvalue);
       this.$emit('changeComponent', 'ListComponent');
     },
 
