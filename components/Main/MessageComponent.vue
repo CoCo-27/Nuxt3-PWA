@@ -83,13 +83,13 @@
 
     <div v-else></div>
 
-    <!-- <div
+    <div
       class="flex flex-col-reverse space-y-reverse space-y-4 w-full h-full pl-4 pb-2 overflow-y-auto overflow-x-hidden"
     >
       <div
         class="flex items-end space-x-4"
-        v-if="this.messagesvalue && this.messagesvalue.length > 0"
-        v-for="(info, index) in this.messagesvalue"
+        v-if="messagesvalue && messagesvalue.length > 0"
+        v-for="(info, index) in messagesvalue"
         :key="index"
       >
         <img class="w-3.5 h-3.5 rounded-[14px]" :src="imageSrc" />
@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="relative w-full px-4 justify-center items-center inline-flex">
       <div
@@ -201,6 +201,7 @@ export default {
 
   methods: {
     gotoPre() {
+      console.log(this.messagesvalue);
       this.$emit('changeComponent', 'ListComponent');
     },
 
@@ -301,16 +302,16 @@ export default {
         socket.send(JSON.stringify(authObject));
 
         // Check if there's a valid message input
-        // if (this.messageInput.trim()) {
-        //   const data = JSON.stringify({
-        //     message: this.messageInput,
-        //     parent: this.selectedItem.id,
-        //   });
+        if (this.messageInput.trim()) {
+          const data = JSON.stringify({
+            message: this.messageInput,
+            parent: this.selectedItem.id,
+          });
 
-        //   socket.send(data);
+          socket.send(data);
 
-        //   this.messageInput = '';
-        // }
+          this.messageInput = '';
+        }
       });
 
       socket.addEventListener('message', (event) => {
