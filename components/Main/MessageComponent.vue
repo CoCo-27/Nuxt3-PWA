@@ -109,9 +109,13 @@
       </div>
     </div>
 
-    <div class="w-full px-4 justify-center items-center inline-flex">
-      <div class="bg-white rounded-[100px] w-full px-4 py-2 gap-2 inline-flex">
-        <div class="w-6 h-6 relative">
+    <div class="relative w-full px-4 justify-center items-center inline-flex">
+      <div
+        class="bg-white rounded-[100px] w-full px-4 py-2 gap-2 justify-center items-center inline-flex"
+      >
+        <div
+          class="w-6 h-6 relative cursor-pointer hover:bg-neutral-200 hover:text-neutral-900 rounded-full"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -125,9 +129,35 @@
             />
           </svg>
         </div>
-        <div class="grow shrink basis-0 text-black text-sm font-normal">
-          schreiben...
-        </div>
+        <input
+          v-model="messageInput"
+          class="grow shrink basis-0 text-black text-sm font-normal py-2 pl-4"
+          type="text"
+          placeholder="Schreiben..."
+          @keydown.enter="sendMessage"
+        />
+        <button
+          class="absolute right-[2rem] top-[0.8rem] rounded-full p-1 text-neutral-800 opacity-60 hover:bg-neutral-200 hover:text-neutral-900"
+          @click="sendMessage"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="tabler-icon tabler-icon-send"
+          >
+            <path d="M10 14l11 -11"></path>
+            <path
+              d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+            ></path>
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -141,14 +171,13 @@ export default {
     return {
       imageSrc: null,
       messagesvalue: [],
+      messageInput: '',
     };
   },
 
   mounted() {
-    console.log('Messages ID === ', this.selectedItem?.Messages);
-
-    this.fetchMessages();
-    this.fetchImage();
+    this.fetchMessages(this.selectedItem);
+    this.fetchImage(this.selectedItem);
   },
 
   props: {
@@ -160,7 +189,6 @@ export default {
     selectedItem: {
       handler(newVal, oldVal) {
         if (newVal) {
-          console.log('watch !!!! ^^^^ === ', newVal);
           this.fetchImage(newVal);
 
           this.fetchMessages(newVal);
@@ -199,6 +227,7 @@ export default {
     },
 
     async fetchMessages(newVal) {
+      console.log('newVal ============== ', newVal);
       const runtimeConfig = useRuntimeConfig();
 
       if (Array.isArray(newVal?.Messages)) {
@@ -223,6 +252,92 @@ export default {
       } else {
         this.messagesvalue = []; // or set to a default value to handle the case when newVal.Messages is undefined
       }
+    },
+
+    // async sendMessage() {
+    //   const runtimeConfig = useRuntimeConfig();
+    //   if (this.messageInput.trim()) {
+    //     console.log('message === ', this.messageInput);
+    //     const response = await fetch(
+    //       'https://app.wunschlachen.de/staging/items/messages',
+    //       {
+    //         method: 'POST',
+    //         headers: {
+    //           Authorization: runtimeConfig.public.BEARER_TOKEN,
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //           message: this.messageInput,
+    //           parent: this.selectedItem.id,
+    //         }),
+    //       }
+    //     );
+
+    //     if (!response.ok) {
+    //       const message = `An error has occurred: ${response.status}`;
+    //       throw new Error(message);
+    //     }
+
+    //     const newMessage = await response.json();
+    //     console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
+    //     this.messagesvalue.unshift(newMessage);
+    //     this.messageInput = '';
+    //   }
+    // },
+
+    async sendMessage() {
+      const runtimeConfig = useRuntimeConfig();
+      const access_token = runtimeConfig.public.BEARER_TOKEN;
+      const socket = new WebSocket(
+        'wss://app.wunschlachen.de/staging/websocket'
+      );
+
+      socket.addEventListener('open', async () => {
+        const authObject = {
+          type: 'auth',
+          access_token,
+        };
+
+        socket.send(JSON.stringify(authObject));
+
+        // Check if there's a valid message input
+        // if (this.messageInput.trim()) {
+        //   const data = JSON.stringify({
+        //     message: this.messageInput,
+        //     parent: this.selectedItem.id,
+        //   });
+
+        //   socket.send(data);
+
+        //   this.messageInput = '';
+        // }
+      });
+
+      socket.addEventListener('message', (event) => {
+        console.log('Received WebSocket message:', event.data);
+        let newMessage;
+        try {
+          newMessage = JSON.parse(event.data);
+        } catch (error) {
+          console.error('Error parsing server response: ', error);
+        }
+
+        if (newMessage && newMessage.message) {
+          console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
+          this.messagesvalue.unshift(newMessage);
+        }
+      });
+
+      // Event emitted when an error occurs
+      socket.addEventListener('error', (event) => {
+        console.error(`WebSocket error: ${event}`);
+      });
+
+      // Close the WebSocket connection when done
+      socket.addEventListener('close', () => {
+        socket.close();
+        console.log('WebSocket connection closed');
+      });
     },
   },
 };

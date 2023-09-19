@@ -369,41 +369,69 @@ export default {
     },
 
     async submitForm() {
-      // data to be sent
-      const formData = {
+      const inputData = this.getFormData();
+      const formData = this.getUploadData();
+
+      const runtimeConfig = useRuntimeConfig();
+      const url = 'https://app.wunschlachen.de/staging';
+
+      try {
+        const response = await this.postRequest(
+          runtimeConfig,
+          `${url}/items/Laboratory_work`,
+          inputData
+        );
+        console.log('response = ', response);
+
+        const fileResponse = await this.postRequest(
+          runtimeConfig,
+          `${url}/files`,
+          formData,
+          false
+        );
+        console.log('fileResponse = ', fileResponse);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    },
+
+    getFormData() {
+      return {
         patient: this.selectedPatientId,
         dentist: this.selectedDentistId,
         service_provider: this.selectedServiceId,
         location: this.selectedLocationId,
         rd_to_bp: this.rd_to_bp,
-        work_details: this.work_details,
-        // assuming you have a field for storing the file id
-        files: this.uploadedFile ? this.uploadedFile.id : null,
+        work_description: this.work_details,
       };
+    },
 
-      try {
-        const runtimeConfig = useRuntimeConfig();
-        const response = await fetch(
-          'https://app.wunschlachen.de/staging/items/Laboratory_work',
-          {
-            method: 'POST',
-            headers: {
-              Authorization: runtimeConfig.public.BEARER_TOKEN,
-            },
-            body: formData,
-          }
-        );
+    getUploadData() {
+      const formData = new FormData();
+      formData.append('files', this.uploadedFile);
 
-        // Use fetch API to make a POST request
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      return formData;
+    },
 
-        const data = await response.json();
-        console.log('response = ', data);
-      } catch (error) {
-        console.error('An error occurred:', error);
+    async postRequest(runtimeConfig, url, data, isJSON = true) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.getHeaders(runtimeConfig, isJSON),
+        body: isJSON ? JSON.stringify(data) : data,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      return response.json();
+    },
+
+    getHeaders(runtimeConfig, isJSON) {
+      return {
+        Authorization: runtimeConfig.public.BEARER_TOKEN,
+        'Content-type': isJSON ? 'application/json' : 'multipart/form-data',
+      };
     },
   },
 };

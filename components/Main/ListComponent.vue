@@ -107,7 +107,7 @@ export default {
     this.loading = true;
     const runtimeConfig = useRuntimeConfig();
     const response = await fetch(
-      'https://app.wunschlachen.de/staging/items/Laboratory_work?fields=*%2Cpatient.first_name%2Cpatient.last_name%2Cpatient.patient_number%2Cdentist.first_name%2Cdentist.last_name%2Cdentist.profile_image.id&=',
+      'https://app.wunschlachen.de/staging/items/Laboratory_work?fields=*%2Cpatient.first_name%2Cpatient.last_name%2Cpatient.patient_number%2Cdentist.first_name%2Cdentist.last_name%2Cdentist.profile_image.id%2Cfiles.directus_files_id&=',
       {
         method: 'GET',
         headers: {
