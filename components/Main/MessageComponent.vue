@@ -83,7 +83,7 @@
 
     <div v-else></div>
 
-    <div
+    <!-- <div
       class="flex flex-col-reverse space-y-reverse space-y-4 w-full h-full pl-4 pb-2 overflow-y-auto overflow-x-hidden"
     >
       <div
@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="relative w-full px-4 justify-center items-center inline-flex">
       <div
