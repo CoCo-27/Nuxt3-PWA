@@ -255,91 +255,91 @@ export default {
       }
     },
 
-    // async sendMessage() {
-    //   const runtimeConfig = useRuntimeConfig();
-    //   if (this.messageInput.trim()) {
-    //     console.log('message === ', this.messageInput);
-    //     const response = await fetch(
-    //       'https://app.wunschlachen.de/staging/items/messages',
-    //       {
-    //         method: 'POST',
-    //         headers: {
-    //           Authorization: runtimeConfig.public.BEARER_TOKEN,
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //           message: this.messageInput,
-    //           parent: this.selectedItem.id,
-    //         }),
-    //       }
-    //     );
-
-    //     if (!response.ok) {
-    //       const message = `An error has occurred: ${response.status}`;
-    //       throw new Error(message);
-    //     }
-
-    //     const newMessage = await response.json();
-    //     console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
-    //     this.messagesvalue.unshift(newMessage);
-    //     this.messageInput = '';
-    //   }
-    // },
-
     async sendMessage() {
       const runtimeConfig = useRuntimeConfig();
-      const access_token = runtimeConfig.public.BEARER_TOKEN;
-      const socket = new WebSocket(
-        'wss://app.wunschlachen.de/staging/websocket'
-      );
+      if (this.messageInput.trim()) {
+        console.log('message === ', this.messageInput);
+        const response = await fetch(
+          'https://app.wunschlachen.de/staging/items/messages',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: runtimeConfig.public.BEARER_TOKEN,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: this.messageInput,
+              parent: this.selectedItem.id,
+            }),
+          }
+        );
 
-      socket.addEventListener('open', async () => {
-        const authObject = {
-          type: 'auth',
-          access_token,
-        };
-
-        socket.send(JSON.stringify(authObject));
-
-        // Check if there's a valid message input
-        if (this.messageInput.trim()) {
-          const data = JSON.stringify({
-            message: this.messageInput,
-            parent: this.selectedItem.id,
-          });
-
-          socket.send(data);
-
-          this.messageInput = '';
-        }
-      });
-
-      socket.addEventListener('message', (event) => {
-        console.log('Received WebSocket message:', event.data);
-        let newMessage;
-        try {
-          newMessage = JSON.parse(event.data);
-        } catch (error) {
-          console.error('Error parsing server response: ', error);
+        if (!response.ok) {
+          const message = `An error has occurred: ${response.status}`;
+          throw new Error(message);
         }
 
-        if (newMessage && newMessage.message) {
-          console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
-          this.messagesvalue.unshift(newMessage);
-        }
-      });
-
-      // Event emitted when an error occurs
-      socket.addEventListener('error', (event) => {
-        console.error(`WebSocket error: ${event}`);
-      });
-
-      // Close the WebSocket connection when done
-      socket.addEventListener('close', () => {
-        socket.close();
-        console.log('WebSocket connection closed');
-      });
+        const newMessage = await response.json();
+        console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
+        this.messagesvalue.unshift(newMessage);
+        this.messageInput = '';
+      }
     },
+
+    // async sendMessage() {
+    //   const runtimeConfig = useRuntimeConfig();
+    //   const access_token = runtimeConfig.public.BEARER_TOKEN;
+    //   const socket = new WebSocket(
+    //     'wss://app.wunschlachen.de/staging/websocket'
+    //   );
+
+    //   socket.addEventListener('open', async () => {
+    //     const authObject = {
+    //       type: 'auth',
+    //       access_token,
+    //     };
+
+    //     socket.send(JSON.stringify(authObject));
+
+    //     // Check if there's a valid message input
+    //     // if (this.messageInput.trim()) {
+    //     //   const data = JSON.stringify({
+    //     //     message: this.messageInput,
+    //     //     parent: this.selectedItem.id,
+    //     //   });
+
+    //     //   socket.send(data);
+
+    //     //   this.messageInput = '';
+    //     // }
+    //   });
+
+    //   socket.addEventListener('message', (event) => {
+    //     console.log('Received WebSocket message:', event.data);
+    //     let newMessage;
+    //     try {
+    //       newMessage = JSON.parse(event.data);
+    //     } catch (error) {
+    //       console.error('Error parsing server response: ', error);
+    //     }
+
+    //     if (newMessage && newMessage.message) {
+    //       console.log('!!!!!!!!!!!!!!!!!!!!! = ', newMessage);
+    //       this.messagesvalue.unshift(newMessage);
+    //     }
+    //   });
+
+    //   // Event emitted when an error occurs
+    //   socket.addEventListener('error', (event) => {
+    //     console.error(`WebSocket error: ${event}`);
+    //   });
+
+    //   // Close the WebSocket connection when done
+    //   socket.addEventListener('close', () => {
+    //     socket.close();
+    //     console.log('WebSocket connection closed');
+    //   });
+    // },
   },
 };
 </script>
